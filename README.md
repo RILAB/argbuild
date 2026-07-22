@@ -1,4 +1,4 @@
-This is a Snakemake workflow for running
+This is a fork of Nate Pope's [Singer Snakemake](https://github.com/nspope/singer-snakemake) workflow for running
 [SINGER](https://github.com/popgenmethods/singer) (MCMC sampling of ancestral
 recombination graphs) in parallel, loosely based on the python wrappers
 included with the binary. The genome is discretized into chunks, and SINGER is
