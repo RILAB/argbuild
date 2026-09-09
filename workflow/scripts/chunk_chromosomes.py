@@ -133,6 +133,24 @@ else:
     logfile.write(f"{tag()} Read {hapmap.rate.size} recombination rates from {hapmap_file}\n")
 
 
+# clip recombination map to a specified factor of the mean, then scale the
+# rates so that the (span-weighted) mean is the "recombination-rate" key from the config
+recombination_clip_factor = snakemake.params.recombination_clip_factor
+assert recombination_clip_factor > 0, "Recombination clipping factor must be positive"
+min_rate, max_rate = hapmap.mean_rate * \
+    np.array([1 / recombination_clip_factor, recombination_clip_factor])
+hapmap = RateMap(position=hapmap.position, rate=np.clip(hapmap.rate, min_rate, max_rate))
+logfile.write(f"{tag()} Clipped recombination map to [{min_rate}, {max_rate}]\n")
+if snakemake.params.recombination_map_center:
+    assert recombination_rate > 0, "Recombination rate must be positive"
+    recombination_scaling_factor = recombination_rate / hapmap.mean_rate
+    hapmap = RateMap(position=hapmap.position, rate=recombination_scaling_factor * hapmap.rate)
+    logfile.write(
+        f"{tag()} Scaled recombination map by factor {recombination_scaling_factor} to "
+        f"mean {hapmap.mean_rate}, min {np.nanmin(hapmap.rate)}, max {np.nanmax(hapmap.rate)}\n"
+    )
+
+
 # inaccessible intervals mask (bed intervals)
 mask_file = vcf_file.replace(".vcf.gz", ".mask.bed")
 if not os.path.exists(mask_file):

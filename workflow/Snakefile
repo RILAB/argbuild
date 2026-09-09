@@ -82,6 +82,9 @@ RECOMBINATION_RATE = float(config["recombination-rate"])
 RAND_SEED = int(config["random-seed"])
 STRATIFY_BY = config["stratify-by"]
 
+RECOMBINATION_MAP_CENTER = bool(config["recombination-map-center"])
+RECOMBINATION_CLIP_FACTOR = float(config["recombination-clip-factor"])
+
 MAX_CHUNK_SIZE = float(config["max-chunk-size"])
 MIN_CHUNK_SIZE = float(config["min-chunk-size"])
 MIN_SITES = float(config["min-sites"])
@@ -202,6 +205,8 @@ checkpoint chunk_chromosomes:
         max_masked_samples = MAX_MASKED_SAMPLES,
         mutation_rate = MUTATION_RATE,
         recombination_rate = RECOMBINATION_RATE,
+        recombination_map_center = RECOMBINATION_MAP_CENTER,
+        recombination_clip_factor = RECOMBINATION_CLIP_FACTOR,
         polarised = POLARISED,
         stratify = STRATIFY_BY,
         stats_window_size = STATS_WINDOW_SIZE,
